@@ -1,0 +1,13 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: podinfo
+  namespace: flux-system
+spec:
+  interval: 1m0s              # ★ 每 1 分钟对齐一次 Git（Argo CD 是固定 3 分钟）
+  path: ./apps/podinfo        # ★ 清单在仓库里的位置
+  prune: true                 # ★ Git 里删掉的资源，集群里也删掉（默认开，Argo CD 需手动配）
+  sourceRef:
+    kind: GitRepository
+    name: flux-system         # ★ 指向 bootstrap 创建的 GitRepository（整个 flux-lab 仓库）
+  validation: client
