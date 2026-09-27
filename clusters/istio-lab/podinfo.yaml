@@ -10,4 +10,3 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system         # ★ 指向 bootstrap 创建的 GitRepository（整个 flux-lab 仓库）
-  validation: client
