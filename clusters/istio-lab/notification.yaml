@@ -1,0 +1,22 @@
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Provider
+metadata:
+  name: argo-events
+  namespace: flux-system
+spec:
+  type: generic                                    # ★ 通用 webhook：把事件 JSON POST 过去
+  address: https://events.shadowdog.work/demo      # ★ Argo Events 的 EventSource 端点
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: podinfo-sync
+  namespace: flux-system
+spec:
+  providerRef:
+    name: argo-events
+  eventSources:                                    # ★ 关心哪些对象的事件
+  - kind: Kustomization
+    name: podinfo
+    namespace: flux-system
+  # eventSeverity: info                            # 可选：只发 error 级别就写 error
