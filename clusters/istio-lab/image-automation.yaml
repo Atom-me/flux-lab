@@ -1,4 +1,4 @@
-apiVersion: image.toolkit.fluxcd.io/v1beta2
+apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
 metadata:
   name: podinfo
@@ -7,7 +7,7 @@ spec:
   image: ghcr.io/stefanprodan/podinfo   # ★ 盯哪个镜像仓库
   interval: 1m0s                        # ★ 每分钟扫一次 tag 列表
 ---
-apiVersion: image.toolkit.fluxcd.io/v1beta2
+apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImagePolicy
 metadata:
   name: podinfo
@@ -19,7 +19,7 @@ spec:
     semver:
       range: ">=6.7.0"                  # ★ 选择策略：6.7.0 及以上 semver 里取最新
 ---
-apiVersion: image.toolkit.fluxcd.io/v1beta2
+apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageUpdateAutomation
 metadata:
   name: podinfo
