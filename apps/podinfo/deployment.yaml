@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: podinfo
-        image: ghcr.io/stefanprodan/podinfo:6.7.0 # {"$imagepolicy": "flux-system:podinfo"}
+        image: ghcr.io/stefanprodan/podinfo:6.15.0 # {"$imagepolicy": "flux-system:podinfo"}
         ports:
         - containerPort: 9898
         resources:
