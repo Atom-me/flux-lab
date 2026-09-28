@@ -1,0 +1,18 @@
+# 租户 A 的应用：只能落在 tenant-a 命名空间
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tenant-app
+  namespace: tenant-a
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: tenant-app}
+  template:
+    metadata:
+      labels: {app: tenant-app}
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/stefanprodan/podinfo:6.15.0
+        ports: [{containerPort: 9898}]

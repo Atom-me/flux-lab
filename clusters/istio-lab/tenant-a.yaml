@@ -1,0 +1,13 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: tenant-a-app
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  path: ./apps/tenant-a
+  prune: true
+  serviceAccountName: tenant-deployer     # ★ 用这个 SA 的身份 apply（只有 tenant-a 的权限）
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
