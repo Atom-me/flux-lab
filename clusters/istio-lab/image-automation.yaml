@@ -34,7 +34,10 @@ spec:
       ref: {branch: main}
     commit:
       author: {name: flux-ci, email: flux-ci@local}
-      messageTemplate: "ci: podinfo image -> {{range .Updated.Images}}{{.}}{{end}}"
+      messageTemplate: |                        # ★ v1 用 .Changed（旧 .Updated 已移除）
+        ci: podinfo image update
+        {{ range $_, $change := .Changed.Changes }}- {{ $change.OldValue }} -> {{ $change.NewValue }}
+        {{ end }}
     push:
       branch: main                      # ★ 需要写权限 deploy key（bootstrap --read-write-key）
   update:
