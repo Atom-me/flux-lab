@@ -1,0 +1,34 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: order-infra
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  path: ./apps/order-demo/infra
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: order-app
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  dependsOn:                       # ★ 等 order-infra Ready 才开始
+  - name: order-infra
+  path: ./apps/order-demo/app
+  prune: true
+  healthChecks:                    # ★ 部署的资源就绪了才算这个 Kustomization Ready
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: order-app
+    namespace: order-demo
+  wait: true                       # ★ 阻塞等待健康检查通过
+  timeout: 2m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system

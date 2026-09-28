@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-app
+  namespace: order-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: order-app}
+  template:
+    metadata:
+      labels: {app: order-app}
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/stefanprodan/podinfo:6.15.0
+        ports: [{containerPort: 9898}]
