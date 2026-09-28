@@ -16,3 +16,12 @@ spec:
       - name: app
         image: ghcr.io/stefanprodan/podinfo:6.15.0
         ports: [{containerPort: 9898}]
+---
+# 租户越权测试：试图往别人的 namespace 写
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tenant-escape-test
+  namespace: demo-app
+data:
+  hacked: "true"
