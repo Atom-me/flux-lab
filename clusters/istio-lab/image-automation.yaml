@@ -1,0 +1,42 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: podinfo
+  namespace: flux-system
+spec:
+  image: ghcr.io/stefanprodan/podinfo   # ★ 盯哪个镜像仓库
+  interval: 1m0s                        # ★ 每分钟扫一次 tag 列表
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: podinfo
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: podinfo
+  policy:
+    semver:
+      range: ">=6.7.0"                  # ★ 选择策略：6.7.0 及以上 semver 里取最新
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageUpdateAutomation
+metadata:
+  name: podinfo
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system                   # ★ 回写到 flux-lab 仓库自身
+  git:
+    checkout:
+      ref: {branch: main}
+    commit:
+      author: {name: flux-ci, email: flux-ci@local}
+      messageTemplate: "ci: podinfo image -> {{range .Updated.Images}}{{.}}{{end}}"
+    push:
+      branch: main                      # ★ 需要写权限 deploy key（bootstrap --read-write-key）
+  update:
+    path: ./apps/podinfo                # ★ 只在这个目录里找标记
+    strategy: Setters                   # 扫描 YAML 注释标记替换镜像

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: podinfo
-        image: ghcr.io/stefanprodan/podinfo:6.7.0   # 03 章镜像自动化会改这里
+        image: ghcr.io/stefanprodan/podinfo:6.7.0 # {"$imagepolicy": "flux-system:podinfo"}
         ports:
         - containerPort: 9898
         resources:
